@@ -1,0 +1,29 @@
+services:
+  openclaw-gateway:
+    # Используем официальный образ из GitHub Container Registry (рекомендовано докой)
+    image: ghcr.io/openclaw/openclaw:latest
+    container_name: openclaw-core
+    restart: unless-stopped
+    # Дока рекомендует режим 'lan' для доступа к UI с хоста
+    ports:
+      - "18789:18789"
+    environment:
+      - OPENCLAW_PORT=18789
+      - OPENCLAW_TZ=Asia/Bishkek
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      # Переменные для корректного бинда внутри контейнера
+      - OPENCLAW_GATEWAY_BIND=lan
+      - NODE_ENV=production
+    volumes:
+      # Мапим локальные папки прямо в домашнюю директорию пользователя node
+      - ./storage:/home/node/.openclaw
+      - ./workspace:/home/node/.openclaw/workspace
+      # Доступ к докеру для работы песочниц (Sandboxing)
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - openclaw-net
+
+networks:
+  openclaw-net:
+    driver: bridge
