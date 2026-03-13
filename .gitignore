@@ -1,3 +1,5 @@
 .env
-storage/
+storage/*
+!storage/skills/
+!storage/skills/**
 workspace/

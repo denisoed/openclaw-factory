@@ -19,6 +19,8 @@ services:
       # Мапим локальные папки прямо в домашнюю директорию пользователя node
       - ./storage:/home/node/.openclaw
       - ./workspace:/home/node/.openclaw/workspace
+      - ./mcp-servers:/home/node/mcp-servers  # Новая папка для серверов
+      - ./.mcporter.json:/home/node/.mcporter.json # Твой конфиг
       # Доступ к докеру для работы песочниц (Sandboxing)
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
